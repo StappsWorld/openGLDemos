@@ -72,7 +72,7 @@ fn main() {
             ));
         } else if let Some([x, y]) = e.mouse_cursor_args() {}
         else {
-            if rng.gen_range(0.0..1.0) < 0.08 && fireworks.len() < 15 {
+            if rng.gen_range(0.0..1.0) < 0.08 && fireworks.len() < 12 {
                 fireworks.push(Firework::new());
             }
 
@@ -84,10 +84,8 @@ fn main() {
                 .iter()
                 .filter(|firework| {
                     !(firework.exploded
-                        && firework
-                            .particles
-                            .iter()
-                            .all(|particle| particle.pos.y > WINDOW_HEIGHT as f64 + 5.0))
+                        && firework.particles.get(firework
+                            .highest_particle.unwrap()).unwrap().pos.y > WINDOW_HEIGHT as f64 + 5.0)
                 })
                 .cloned()
                 .collect();

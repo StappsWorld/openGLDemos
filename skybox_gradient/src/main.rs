@@ -34,7 +34,7 @@ const WINDOW_HEIGHT: u32 = 1080;
 fn main() {
     let opengl = OpenGL::V3_2;
 
-    let mut window: Window = WindowSettings::new("Example Title", [WINDOW_WIDTH, WINDOW_HEIGHT])
+    let mut window: Window = WindowSettings::new("Skybox Gradient", [WINDOW_WIDTH, WINDOW_HEIGHT])
         .graphics_api(opengl)
         .exit_on_esc(true)
         .build()
@@ -87,7 +87,7 @@ fn main() {
                 clear(BLACK, gl);
                 Image::new().draw(&texture, &c.draw_state, c.transform, gl);
             });
-            window.set_title(format!("Example Title | {:03} fps", fps_counter.tick()));
+            window.set_title(format!("Skybox Gradient | {:03} fps", fps_counter.tick()));
         }
     }
 }

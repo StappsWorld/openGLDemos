@@ -123,6 +123,7 @@ pub struct Firework {
     pub firework: Particle,
     pub exploded: bool,
     pub particles: Vec<Particle>,
+    pub highest_particle: Option<usize>,
 }
 impl Firework {
     pub fn new() -> Firework {
@@ -139,6 +140,7 @@ impl Firework {
             firework: firework,
             exploded: false,
             particles: vec![],
+            highest_particle: None,
         }
     }
 
@@ -169,7 +171,7 @@ impl Firework {
     }
 
     pub fn explode(&mut self) {
-        for _ in 0..100 {
+        for i in 0..100 {
             let p = Particle::new(
                 self.firework.pos.x,
                 self.firework.pos.y,
@@ -177,6 +179,12 @@ impl Firework {
                 random_color(),
             );
             self.particles.push(p);
+            match self.highest_particle {
+                Some(index) => if p.vel.y < self.particles.get(index).unwrap().vel.y {
+                    self.highest_particle = Some(i);
+                }
+                None => self.highest_particle = Some(i),
+            }
         }
     }
 }

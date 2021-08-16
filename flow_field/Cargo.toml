@@ -1,12 +1,12 @@
 [package]
-name = "Example_Package"
+name = "flow_field"
 version = "0.1.0"
 authors = ["sam"]
 edition = "2018"
 
 
 [[bin]]
-name = "Example_Package"
+name = "flow_field"
 
 [dependencies]
 piston = "0.52.0"
@@ -18,3 +18,5 @@ colors-transform = "0.2.11"
 gl = "0.11.0"
 image = "0.23.14"
 ang = "0.5.0"
+noise = "0.7.0"
+num = "0.4.0"

@@ -1,0 +1,20 @@
+[package]
+name = "dithering"
+version = "0.1.0"
+authors = ["sam"]
+edition = "2018"
+
+
+[[bin]]
+name = "dithering"
+
+[dependencies]
+piston = "0.52.0"
+piston2d-graphics = "0.36.0"
+pistoncore-glutin_window = "0.66.0"
+piston2d-opengl_graphics = "0.73.0"
+rand = "0.8.4"
+colors-transform = "0.2.11"
+gl = "0.11.0"
+image = "0.23.14"
+ang = "0.5.0"

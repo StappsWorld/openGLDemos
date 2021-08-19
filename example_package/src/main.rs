@@ -12,24 +12,9 @@ use piston::input::RenderEvent;
 use piston::window::WindowSettings;
 use piston::{AdvancedWindow, EventLoop, MouseCursorEvent, RenderArgs};
 use rand::Rng;
-use Example_Package::{FPSCounter, vector::Vector};
+use Example_Package::{FPSCounter, vector::Vector, particle::Particle, *};
 
-const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
-const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 0.0];
-const WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
-const YELLOW: [f32; 4] = [1.0, 1.0, 0.0, 1.0];
-const BLUE: [f32; 4] = [0.0, 0.0, 1.0, 1.0];
-const CYAN: [f32; 4] = [0.0, 1.0, 1.0, 1.0];
-const MAGENTA: [f32; 4] = [1.0, 0.0, 1.0, 1.0];
-const GRAY: [f32; 4] = [0.5, 0.5, 0.5, 1.0];
-const LIGHT_GRAY: [f32; 4] = [0.8, 0.8, 0.8, 1.0];
-const LIGHT_BLUE: [f32; 4] = [0.5, 0.5, 1.0, 1.0];
-const LIGHT_GREEN: [f32; 4] = [0.0, 1.0, 0.5, 1.0];
-const LIGHT_RED: [f32; 4] = [1.0, 0.0, 0.5, 1.0];
 
-const WINDOW_WIDTH: u32 = 1920;
-const WINDOW_HEIGHT: u32 = 1080;
 
 fn main() {
     let opengl = OpenGL::V3_2;

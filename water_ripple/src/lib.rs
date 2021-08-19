@@ -1,6 +1,8 @@
 use std::collections::VecDeque;
 use std::time::{Duration, Instant};
 
+pub mod vector;
+
 pub const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
 pub const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
 pub const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 0.0];
@@ -15,11 +17,8 @@ pub const LIGHT_BLUE: [f32; 4] = [0.5, 0.5, 1.0, 1.0];
 pub const LIGHT_GREEN: [f32; 4] = [0.0, 1.0, 0.5, 1.0];
 pub const LIGHT_RED: [f32; 4] = [1.0, 0.0, 0.5, 1.0];
 
-pub const WINDOW_WIDTH: u32 = 1920;
-pub const WINDOW_HEIGHT: u32 = 1080;
-
-pub mod vector;
-pub mod particle;
+pub const WINDOW_WIDTH: u32 = 600;
+pub const WINDOW_HEIGHT: u32 = 400;
 
 /// Measures Frames Per Second (FPS).
 #[derive(Debug)]
@@ -54,4 +53,19 @@ impl FPSCounter {
         self.last_second_frames.push_back(now);
         self.last_second_frames.len()
     }
+}
+
+pub fn u16_to_u8(x: u16) -> u8 {
+    if x > 255 {
+        255
+    } else {
+        x as u8
+    }
+}
+
+use std::convert::TryInto;
+
+pub fn convert_vec_to_array<T, const N: usize>(v: Vec<T>) -> [T; N] {
+    v.try_into()
+        .unwrap_or_else(|v: Vec<T>| panic!("Expected a Vec of length {} but it was {}", N, v.len()))
 }

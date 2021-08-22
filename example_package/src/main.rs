@@ -76,13 +76,3 @@ fn main() {
         }
     }
 }
-
-fn from_rgba(pack: [f32; 4]) -> [f32; 4] {
-    let [r, g, b, a] = pack;
-    let [r_f, g_f, b_f] = [r / 255.0, g / 255.0, b / 255.0];
-    [r_f, g_f, b_f, a]
-}
-
-fn map_range(from_range: (f64, f64), to_range: (f64, f64), s: f64) -> f64 {
-    to_range.0 + (s - from_range.0) * (to_range.1 - to_range.0) / (from_range.1 - from_range.0)
-}

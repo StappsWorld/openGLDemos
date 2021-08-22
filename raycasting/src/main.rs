@@ -146,7 +146,7 @@ impl Particle {
         };
 
         let mut rays = vec![];
-        for i_raw in (0..360) {
+        for i_raw in 0..360 {
             let i = i_raw as f64;
             rays.push(Ray {
                 pos: pos,

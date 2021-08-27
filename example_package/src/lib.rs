@@ -20,6 +20,7 @@ pub const WINDOW_HEIGHT: u32 = 1080;
 
 pub mod vector;
 pub mod particle;
+pub mod matrix;
 
 /// Measures Frames Per Second (FPS).
 #[derive(Debug)]

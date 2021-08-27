@@ -191,6 +191,7 @@ impl Vector3d {
         }
     }
 
+    // This function generates a Vector3d from a theta (angle from x axis to [v.x, v.y]) and phi (angle from y axis [v.y, v.z]) in degrees.
     pub fn from_heading<T: 'static + Into<f64> + Copy>(theta_raw: T, phi_raw: T) -> Vector3d {
         let theta_deg: f64 = theta_raw.into();
         let theta: f64 = theta_deg.to_radians();
@@ -233,14 +234,17 @@ impl Vector3d {
         *self = Vector3d::new(self.x, self.y, z);
     }
 
+    // This function sets theta (angle from x axis to [v.x, v.y]) in degrees.
     pub fn set_theta<T: 'static + Into<f64> + Copy>(&mut self, theta_raw: f64) {
         self.set_heading(theta_raw, self.heading.1);
     }
 
+    // This function sets phi (angle from y axis [v.y, v.z]) in degrees.
     pub fn set_phi<T: 'static + Into<f64> + Copy>(&mut self, phi_raw: f64) {
         self.set_heading(self.heading.0, phi_raw);
     }
 
+    // This function sets the heading in (theta, phi) format in degrees.
     pub fn set_heading<T: 'static + Into<f64> + Copy>(&mut self, theta_raw: T, phi_raw: T) {
         *self = Vector3d::from_heading(theta_raw, phi_raw) * self.mag;
     }
@@ -277,6 +281,7 @@ impl Vector3d {
         }
     }
 
+    // This angle returns the angle between two Vector3d's in degrees.
     pub fn angle_between(&self, other: &Vector3d) -> f64 {
         (1.0 / (self.dot(other) / ((self.mag * other.mag).sqrt())).cos()).to_degrees()
     }
@@ -361,5 +366,103 @@ impl std::ops::Neg for Vector3d {
 impl From<Vector> for Vector3d {
     fn from(vec: Vector) -> Vector3d {
         Vector3d::new(vec.x, vec.y, 0.0)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
+pub struct VectorN {
+    data: Vec<f64>,
+    mag : f64,
+} impl VectorN {
+    pub fn new(data: Vec<f64>) -> VectorN {
+        let mut v = VectorN { data, mag : 0.0 };
+        v.update_mag();
+        v
+    }
+
+    pub fn len(&self) -> usize {
+        self.data.len()
+    }
+
+    pub fn set_val(&mut self, index: usize, val: f64) {
+        self.data[index] = val;
+    }
+
+    pub fn dot(&self, other: &VectorN) -> f64 {
+        let mut sum = 0.0;
+        for i in 0..self.len() {
+            sum += self.data[i] * other.data[i];
+        }
+        sum
+    }
+
+    pub fn mag(&self) -> f64 {
+        self.mag
+    }
+
+    pub fn update_mag(&mut self) {
+        self.mag = self.dot(&self).sqrt();
+    }
+
+    pub fn normalize(&mut self) {
+        let mag = self.mag();
+        for i in 0..self.len() {
+            self.data[i] /= mag;
+        }
+    }
+}
+impl std::ops::Add<VectorN> for VectorN {
+    fn add(self, other: VectorN) -> VectorN {
+        let data = self.data.iter().zip(other.data.iter()).map(|(a, b)| a + b).collect();
+        VectorN::new(data)
+    }
+
+    type Output = VectorN;
+}
+impl std::ops::Sub<VectorN> for VectorN {
+    fn sub(self, other: VectorN) -> VectorN {
+        let data = self.data.iter().zip(other.data.iter()).map(|(a, b)| a - b).collect();
+        VectorN::new(data)
+    }
+
+    type Output = VectorN;
+}
+impl std::ops::AddAssign for VectorN {
+    fn add_assign(&mut self, other: VectorN) {
+        *self = self.clone() + other;
+    }
+}
+impl std::ops::SubAssign for VectorN {
+    fn sub_assign(&mut self, other: VectorN) {
+        *self = self.clone() + other;
+    }
+}
+impl std::ops::Mul<f64> for VectorN {
+    type Output = VectorN;
+
+    fn mul(self, rhs: f64) -> VectorN {
+        let data = self.data.iter().map(|a| a * rhs).collect();
+        VectorN::new(data)
+    }
+}
+impl std::ops::MulAssign<f64> for VectorN {
+    fn mul_assign(&mut self, rhs: f64) {
+        *self = self.clone() * rhs;
+    }
+}
+impl std::ops::Neg for VectorN {
+    type Output = VectorN;
+    fn neg(self) -> VectorN {
+        self * -1.0
+    }
+}
+impl From<Vector> for VectorN {
+    fn from(vec: Vector) -> VectorN {
+        VectorN::new(vec![vec.x, vec.y])
+    }
+}
+impl From<Vector3d> for VectorN {
+    fn from(vec: Vector3d) -> VectorN {
+        VectorN::new(vec![vec.x, vec.y, vec.z])
     }
 }

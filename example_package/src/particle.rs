@@ -33,8 +33,8 @@ impl Particle {
         let y = rng.gen_range(0.0..WINDOW_HEIGHT as f64);
         Particle {
             pos: Vector::new(x, y),
-            vel: Vector::random2D(),
-            acc: Vector::random2D(),
+            vel: Vector::random(),
+            acc: Vector::random(),
             max_speed: rng.gen_range(0.0..4.0 as f64),
             color: random_color(),
         }

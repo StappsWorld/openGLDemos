@@ -176,6 +176,10 @@ impl Matrix {
             }
         }
 
+        if is_upper && is_lower {
+            panic!("Matrix is both an upper and lower triangular matrix... Please take a look and submit a bug report...\n{}", self);
+        }
+
         self.triangular = if is_upper {
             Triangular::Upper
         } else if is_lower {

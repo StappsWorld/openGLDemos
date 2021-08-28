@@ -167,6 +167,12 @@ impl std::ops::Neg for Vector {
         Vector::new(x, y)
     }
 }
+impl std::fmt::Display for Vector {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "<{}, {}>", self.x, self.y)
+    }
+}
+
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
 pub struct Vector3d {
@@ -192,7 +198,7 @@ impl Vector3d {
     }
 
     // This function generates a Vector3d from a theta (angle from x axis to [v.x, v.y]) and phi (angle from y axis [v.y, v.z]) in degrees.
-    pub fn from_heading<T: 'static + Into<f64> + Copy>(theta_raw: T, phi_raw: T) -> Vector3d {
+    pub fn from_heading<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(theta_raw: T, phi_raw: T) -> Vector3d {
         let theta_deg: f64 = theta_raw.into();
         let theta: f64 = theta_deg.to_radians();
         let phi_deg: f64 = phi_raw.into();
@@ -219,33 +225,33 @@ impl Vector3d {
         (self.x, self.y, self.z)
     }
 
-    pub fn set_x<T: 'static + Into<f64> + Copy>(&mut self, x_raw: f64) {
+    pub fn set_x<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, x_raw: T) {
         let x: f64 = x_raw.into();
         *self = Vector3d::new(x, self.y, self.z);
     }
 
-    pub fn set_y<T: 'static + Into<f64> + Copy>(&mut self, y_raw: f64) {
+    pub fn set_y<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, y_raw: T) {
         let y: f64 = y_raw.into();
         *self = Vector3d::new(self.x, y, self.z);
     }
 
-    pub fn set_z<T: 'static + Into<f64> + Copy>(&mut self, z_raw: f64) {
+    pub fn set_z<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, z_raw: T) {
         let z: f64 = z_raw.into();
         *self = Vector3d::new(self.x, self.y, z);
     }
 
     // This function sets theta (angle from x axis to [v.x, v.y]) in degrees.
-    pub fn set_theta<T: 'static + Into<f64> + Copy>(&mut self, theta_raw: f64) {
-        self.set_heading(theta_raw, self.heading.1);
+    pub fn set_theta<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, theta_raw: T) {
+        self.set_heading(theta_raw, self.heading.1.into());
     }
 
     // This function sets phi (angle from y axis [v.y, v.z]) in degrees.
-    pub fn set_phi<T: 'static + Into<f64> + Copy>(&mut self, phi_raw: f64) {
-        self.set_heading(self.heading.0, phi_raw);
+    pub fn set_phi<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, phi_raw: T) {
+        self.set_heading(self.heading.0, phi_raw.into());
     }
 
     // This function sets the heading in (theta, phi) format in degrees.
-    pub fn set_heading<T: 'static + Into<f64> + Copy>(&mut self, theta_raw: T, phi_raw: T) {
+    pub fn set_heading<T: 'static + Into<f64> + Copy + std::convert::From<f64>>(&mut self, theta_raw: T, phi_raw: T) {
         *self = Vector3d::from_heading(theta_raw, phi_raw) * self.mag;
     }
 
@@ -368,6 +374,11 @@ impl From<Vector> for Vector3d {
         Vector3d::new(vec.x, vec.y, 0.0)
     }
 }
+impl std::fmt::Display for Vector3d {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "<{}, {}, {}>", self.x, self.y, self.z)
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
 pub struct VectorN {
@@ -380,12 +391,27 @@ pub struct VectorN {
         v
     }
 
+    pub fn new_empty(size: usize) -> VectorN {
+        VectorN {
+            data: vec![0.0; size],
+            mag: 0.0,
+        }
+    }
+
     pub fn len(&self) -> usize {
         self.data.len()
     }
 
-    pub fn set_val(&mut self, index: usize, val: f64) {
-        self.data[index] = val;
+    pub fn get(&self, index: usize) -> f64 {
+        self.data[index]
+    }
+
+    pub fn set<T: 'static + Into<f64> + Copy>(&mut self, index: usize, val: T) -> Option<()> {
+        if index >= self.data.len() {
+            return None;
+        }
+        self.data[index] = val.into();
+        Some(())
     }
 
     pub fn dot(&self, other: &VectorN) -> f64 {
@@ -464,5 +490,18 @@ impl From<Vector> for VectorN {
 impl From<Vector3d> for VectorN {
     fn from(vec: Vector3d) -> VectorN {
         VectorN::new(vec![vec.x, vec.y, vec.z])
+    }
+}
+impl std::fmt::Display for VectorN {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "<")?;
+        for i in 0..self.len() {
+            if i == self.len() - 1 {
+                write!(f, "{}", self.data[i])?;
+            } else {
+                write!(f, "{}, ", self.data[i])?;
+            }
+        }
+        write!(f, ">")
     }
 }

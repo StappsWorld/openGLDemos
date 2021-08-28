@@ -12,7 +12,7 @@ use piston::input::RenderEvent;
 use piston::window::WindowSettings;
 use piston::{AdvancedWindow, EventLoop, MouseCursorEvent, RenderArgs};
 use rand::Rng;
-use Example_Package::{FPSCounter, vector::Vector, particle::Particle, *};
+use Example_Package::{FPSCounter, vector::Vector, particle::Particle, matrix::Matrix, *};
 
 
 

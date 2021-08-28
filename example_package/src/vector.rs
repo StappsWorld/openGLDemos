@@ -99,6 +99,28 @@ impl Vector {
     pub fn dot(&self, other: &Vector) -> f64 {
         (self.x * other.x) + (self.y * other.y)
     }
+
+    pub fn cos_angle_between(&self, other: &Vector) -> f64 {
+        self.dot(other) / (self.mag() * other.mag())
+    }
+
+    // This function returns the vector projection of self onto other
+    pub fn project(&self, other: &Vector) -> Vector {
+        let dot = self.dot(other);
+        let mag = other.mag * other.mag;
+        let frac = dot / mag;
+        *other * frac
+    }
+
+    // This function returns the scalar component of self in the direction of other
+    pub fn scalar_comp(&self, other: &Vector) -> f64 {
+        self.mag() * self.cos_angle_between(other)
+    }
+
+    // Functionally the same as self * other
+    pub fn cross(self, other: Vector) -> Vector3d {
+        self * other
+    }
 }
 impl std::ops::Add<Vector> for Vector {
     fn add(self, other: Vector) -> Vector {
@@ -157,6 +179,18 @@ impl std::ops::MulAssign<f64> for Vector {
         let x = self.x * rhs;
         let y = self.y * rhs;
         *self = Vector::new(x, y);
+    }
+}
+impl std::ops::Div<f64> for Vector {
+    type Output = Vector;
+
+    fn div(self, other: f64) -> Vector {
+        self * (1.0 / other)
+    }
+}
+impl std::ops::DivAssign<f64> for Vector {
+    fn div_assign(&mut self, rhs: f64) {
+        *self *= (1.0 / rhs);
     }
 }
 impl std::ops::Neg for Vector {
@@ -263,6 +297,12 @@ impl Vector3d {
         self.mag = 1.0;
     }
 
+    pub fn get_normalized(&self) -> Vector3d {
+        let mut v = self.clone();
+        v.normalize();
+        v
+    }
+
     // A function that finds the distance between this vector and another.
     pub fn distance(self, other: Vector3d) -> f64 {
         (self - other).mag
@@ -292,9 +332,32 @@ impl Vector3d {
         (1.0 / (self.dot(other) / ((self.mag * other.mag).sqrt())).cos()).to_degrees()
     }
 
+    pub fn cos_angle_between(&self, other: &Vector3d) -> f64 {
+        self.dot(other) / (self.mag * other.mag)
+    }
+
     pub fn dot(&self, other: &Vector3d) -> f64 {
         (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
     }
+
+    // This function returns the vector projection of self onto other
+    pub fn project(&self, other: &Vector3d) -> Vector3d {
+        let dot = self.dot(other);
+        let mag = other.mag * other.mag;
+        let frac = dot / mag;
+        *other * frac
+    }
+
+    // This function returns the scalar component of self in the direction of other
+    pub fn scalar_comp(&self, other: &Vector3d) -> f64 {
+        self.mag() * self.cos_angle_between(other)
+    }
+
+    // Functionally the same as self * other
+    pub fn cross(self, other: Vector3d) -> Vector3d {
+        self * other
+    }
+
 }
 impl std::ops::Add<Vector3d> for Vector3d {
     fn add(self, other: Vector3d) -> Vector3d {
@@ -346,10 +409,22 @@ impl std::ops::Mul<Vector3d> for Vector3d {
     type Output = Vector3d;
 
     fn mul(self, other: Vector3d) -> Vector3d {
-        let x = (self.x * other.z) - (self.z * other.y);
+        let x = (self.y * other.z) - (self.z * other.y);
         let y = (self.z * other.x) - (self.x * other.z);
         let z = (self.x * other.y) - (self.y * other.x);
         Vector3d::new(x, y, z)
+    }
+}
+impl std::ops::Div<f64> for Vector3d {
+    type Output = Vector3d;
+
+    fn div(self, other: f64) -> Vector3d {
+        self * (1.0 / other)
+    }
+}
+impl std::ops::DivAssign<f64> for Vector3d {
+    fn div_assign(&mut self, other: f64) {
+        *self *= (1.0 / other);
     }
 }
 impl std::ops::MulAssign<f64> for Vector3d {
@@ -436,6 +511,25 @@ pub struct VectorN {
             self.data[i] /= mag;
         }
     }
+
+    pub fn cos_angle_between(&self, other: &VectorN) -> f64 {
+        self.dot(other) / (self.mag() * other.mag())
+    }
+
+    // This function returns the vector projection of self onto other
+    pub fn project(&self, other: &VectorN) -> VectorN {
+        let dot = self.dot(other);
+        let mag = other.mag * other.mag;
+        let frac = dot / mag;
+        other.clone() * frac
+    }
+
+    // This function returns the scalar component of self in the direction of other
+    pub fn scalar_comp(&self, other: &VectorN) -> f64 {
+        self.mag() * self.cos_angle_between(other)
+    }
+
+    // TODO - Implement cross product
 }
 impl std::ops::Add<VectorN> for VectorN {
     fn add(self, other: VectorN) -> VectorN {
@@ -474,6 +568,18 @@ impl std::ops::Mul<f64> for VectorN {
 impl std::ops::MulAssign<f64> for VectorN {
     fn mul_assign(&mut self, rhs: f64) {
         *self = self.clone() * rhs;
+    }
+}
+impl std::ops::Div<f64> for VectorN {
+    type Output = VectorN;
+
+    fn div(self, rhs: f64) -> VectorN {
+        self * (1.0 / rhs)
+    }
+}
+impl std::ops::DivAssign<f64> for VectorN {
+    fn div_assign(&mut self, rhs: f64) {
+        *self = self.clone() / rhs;
     }
 }
 impl std::ops::Neg for VectorN {

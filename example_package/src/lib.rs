@@ -21,6 +21,7 @@ pub const WINDOW_HEIGHT: u32 = 1080;
 pub mod vector;
 pub mod particle;
 pub mod matrix;
+pub mod line;
 
 /// Measures Frames Per Second (FPS).
 #[derive(Debug)]
@@ -91,7 +92,7 @@ use std::convert::TryInto;
 
 use rand::Rng;
 
-pub fn convert_vec_to_array<T, const N: usize>(v: Vec<T>) -> [T; N] {
-    v.try_into()
-        .unwrap_or_else(|v: Vec<T>| panic!("Expected a Vec of length {} but it was {}", N, v.len()))
-}
+// pub fn convert_vec_to_array<T, const N: usize>(v: Vec<T>) -> [T; N] {
+//     v.try_into()
+//         .unwrap_or_else(|v: Vec<T>| panic!("Expected a Vec of length {} but it was {}", N, v.len()))
+// }

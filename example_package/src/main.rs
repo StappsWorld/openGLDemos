@@ -12,11 +12,11 @@ use piston::input::RenderEvent;
 use piston::window::WindowSettings;
 use piston::{AdvancedWindow, EventLoop, MouseCursorEvent, RenderArgs};
 use rand::Rng;
-use Example_Package::{FPSCounter, vector::Vector, particle::Particle, matrix::Matrix, *};
+use Example_Package::{FPSCounter, vector::*, particle::Particle, matrix::Matrix, line::Line, *};
 
 
 
-fn main() {
+fn main() {    
     let opengl = OpenGL::V3_2;
 
     let mut window: Window = WindowSettings::new("Example Title", [WINDOW_WIDTH, WINDOW_HEIGHT])
@@ -48,6 +48,7 @@ fn main() {
     let mut fps_counter: FPSCounter = FPSCounter::new();
 
     let mut rng = rand::thread_rng();
+
 
 
     let mut events = Events::new(EventSettings::new());

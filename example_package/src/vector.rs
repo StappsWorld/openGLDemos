@@ -121,6 +121,17 @@ impl Vector {
     pub fn cross(self, other: Vector) -> Vector3d {
         self * other
     }
+
+    pub fn angle_given_dot(mag_a: f64, mag_b: f64, dot: f64) -> f64 {
+        let mag = mag_a * mag_b;
+        (dot / mag).acos().to_degrees()
+    }
+
+    pub fn angle_given_cross(mag_a: f64, mag_b: f64, cross: f64) -> f64 {
+        let mag = mag_a * mag_b;
+        (cross / mag).asin().to_degrees()
+    }
+
 }
 impl std::ops::Add<Vector> for Vector {
     fn add(self, other: Vector) -> Vector {

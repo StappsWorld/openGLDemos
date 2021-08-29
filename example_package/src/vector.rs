@@ -93,7 +93,7 @@ impl Vector {
     }
 
     pub fn angle_between(&self, other: &Vector) -> f64 {
-        (1.0 / (self.dot(other) / ((self.mag * other.mag).sqrt())).cos()).to_degrees()
+        self.cos_angle_between(other).acos().to_degrees()
     }
 
     pub fn dot(&self, other: &Vector) -> f64 {

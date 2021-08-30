@@ -1,4 +1,5 @@
-use crate::{vector::Vector, *};
+use crate::*;
+use yalal::vector::Vector;
 use opengl_graphics::GlGraphics;
 use piston::RenderArgs;
 use rand::Rng;

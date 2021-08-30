@@ -18,10 +18,7 @@ pub const LIGHT_RED: [f32; 4] = [1.0, 0.0, 0.5, 1.0];
 pub const WINDOW_WIDTH: u32 = 1920;
 pub const WINDOW_HEIGHT: u32 = 1080;
 
-pub mod vector;
 pub mod particle;
-pub mod matrix;
-pub mod line;
 
 /// Measures Frames Per Second (FPS).
 #[derive(Debug)]

@@ -1,0 +1,3 @@
+[submodule "example_package/yalal"]
+	path = example_package/yalal
+	url = https://github.com/StappsWorld/YALAL

@@ -1,0 +1,24 @@
+[package]
+name = "noise_visualize"
+version = "0.1.0"
+authors = ["sam"]
+edition = "2018"
+
+
+[[bin]]
+name = "noise_visualize"
+
+[dependencies]
+piston = "0.53.1"
+piston2d-graphics = "0.42.0"
+pistoncore-glutin_window = "0.69.0"
+piston2d-opengl_graphics = "0.81.0"
+rand = "0.8.4"
+colors-transform = "0.2.11"
+gl = "0.14.0"
+image = "0.24.1"
+ang = "0.6.0"
+yalal = { git = "https://github.com/StappsWorld/YALAL.git", branch = "main" }
+noise = "0.7.0"
+tokio = { version = "1.17.0", features = ["full"] }
+rayon = "1.5"
